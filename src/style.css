@@ -1,0 +1,60 @@
+@import url(font.css);
+
+:root {
+    font-family: HYRunYuan, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: bold;
+
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    display: block;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    text-align: center;
+}
+
+.cButton {
+    margin: var(--margin);
+    background-color: #446;
+    border-radius: 30px;
+    display: table;
+}
+
+.cButton > span {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 30px;
+}
+
+.box {
+    margin: var(--margin);
+    background-color: #335;
+    border-radius: 30px;
+    box-shadow: #113 calc(-0.5 * var(--margin)) calc(0.5 * var(--margin));
+}
+
+a {
+    color: inherit;
+}

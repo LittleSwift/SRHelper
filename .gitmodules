@@ -1,0 +1,3 @@
+[submodule "public/srres"]
+	path = public/srres
+	url = git@github.com:Mar-7th/StarRailRes.git
