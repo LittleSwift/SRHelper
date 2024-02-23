@@ -1,17 +1,11 @@
 <script setup lang="ts">
 import {Ref, ref} from "vue";
+import {getUser, updateInfo, User} from "./mihomo.ts";
 
 const version = "2.0";
 
-interface User {
-  uid: number;
-  name: string;
-  description: string;
-  avatar: string;
-}
 
-let user: Ref<User> = ref(JSON.parse(localStorage["userInfo"] ||
-    '{"uid":100000000,"name":"未登录！","description":"未登录！","avatar":"/icon/avatar/1001.png"}'));
+let user: Ref<User> = ref(getUser());
 let state = ref("");
 
 function redirect(loc: string) {
@@ -20,12 +14,9 @@ function redirect(loc: string) {
 
 function updateUid() {
   state.value = "登录中，请稍后……";
-  fetch(`http://localhost:7841/sr_info_parsed/${user.value.uid}`, {method: "GET", mode: 'cors'})
-      .then(response => response.json())
+  updateInfo(user.value.uid)
       .then(data => {
-        user.value.avatar = data.player.avatar.icon;
-        user.value.name = data.player.nickname;
-        user.value.description = data.player.signature;
+        user.value = data;
         localStorage["userInfo"] = JSON.stringify(user.value);
         state.value = "";
       });
@@ -49,8 +40,6 @@ function updateUid() {
         <input type="number" id="uid" v-model.number.lazy="user.uid" @change="updateUid()"/>
         <br/>
         名称: {{ user.name }}
-        <br/><br/>
-        <span @click="redirect('/index.html')">点击返回主页</span>
       </div>
       <p class="descriptionText">
         {{ user.description }}

@@ -1,27 +1,38 @@
 <script setup lang="ts">
 import {onMounted, ref, Ref} from "vue";
+import {getLoginState, getUser, LoginState, User} from "./mihomo.ts";
+
 
 const version = "2.0";
 
-interface User {
-  uid: number;
-  name: string;
-  description: string;
-  avatar: string;
-}
-
-let user: Ref<User> = ref(JSON.parse(localStorage["userInfo"] ||
-    '{"uid":100000000,"name":"未登录！","description":"未登录！","avatar":"/srres/icon/avatar/1001.png"}'));
+let user: Ref<User> = ref(getUser());
 
 onMounted(() => {
-  if (!localStorage["userInfo"]) {
+  if (getLoginState() == LoginState.NoAccount) {
     alert("第一次使用请先登录！");
-    redirect("/settings.html");
+    loginPopup();
   }
-})
+});
 
 function redirect(loc: string) {
   location.href = loc;
+}
+
+async function loginPopup() {
+  let w = window.open(
+      '/settings.html',
+      'SRHelper',
+      'height=600,width=800,top=300,left=200,toolbar=no,menubar=no, scrollbars=no,resizable=no,location=no, status=no'
+  )
+  await new Promise((resolve, reject) => {
+    let _ = setInterval(() => {
+      if (w.closed) {
+        clearInterval(_);
+        resolve();
+      }
+    }, 100);
+  });
+  location.reload();
 }
 
 </script>
@@ -32,7 +43,7 @@ function redirect(loc: string) {
       <h1>SRHelper</h1>
     </div>
     <div class="box funcBox">
-      <div class="cButton charBox">
+      <div class="cButton charBox" @click="redirect('/characters.html')">
         <span>角色练度</span>
       </div>
       <div class="cButton relicBox">
@@ -41,7 +52,7 @@ function redirect(loc: string) {
       <div class="cButton gachaBox">
         <span>抽卡分析</span>
       </div>
-      <div class="cButton settingsBox" @click="redirect('/settings.html')">
+      <div class="cButton settingsBox" @click="loginPopup()">
         <span>设置</span>
       </div>
     </div>
@@ -49,6 +60,8 @@ function redirect(loc: string) {
       <img class="avatarImg" alt="头像" :src="'/srres/'+user.avatar"/>
       <p class="infoText">
         当前SRHelper适配游戏版本：{{ version }}
+        <br/>
+        请注意，SRHelper被设计用于1440x720的窗口大小，当前窗口大小为{{ $vssWidth }}x{{ $vssHeight }}
         <br/>
         名称：{{ user.name }}
         <br/>

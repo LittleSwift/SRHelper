@@ -48,6 +48,17 @@ body {
     font-size: 30px;
 }
 
+.cAttribute {
+    margin: 0;
+    background-color: #446;
+    border-radius: 15px;
+    padding: 0 8px;
+}
+
+.cAttribute > span {
+    font-size: 12px;
+}
+
 .box {
     margin: var(--margin);
     background-color: #335;
@@ -57,4 +68,12 @@ body {
 
 a {
     color: inherit;
+}
+
+.verticalSeparator {
+    height: 100%;
+    width: 0;
+    border-left: #224 solid 2px;
+    border-radius: 1px;
+    vertical-align: top;
 }
